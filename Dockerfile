@@ -22,6 +22,7 @@ RUN wget https://bitbucket.org/srp33/gsoa/downloads/GSOA_0.99.9.tar.gz \
 
 EXPOSE 5000
 COPY run_flask.sh /scripts/run_flask.sh
+RUN chmod +x /scripts/run_flask.sh
 CMD ["/scripts/run_flask.sh"]
     
 
