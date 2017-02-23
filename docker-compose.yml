@@ -4,7 +4,7 @@ services:
   ui:
     image: shelleymac/shiny
     ports:
-      - "80::3838"
+      - "80:3838"
     volumes:
       - /home/shelleymacneil/shiny_ui:/srv/shiny-server/gsoa
       - /home/shelleymacneil/gsoa_data:/data
@@ -16,5 +16,5 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /home/shelleymacneil/gsoa:/app
+      - /home/shelleymacneil/gsoa_docker:/app
       - /home/shelleymacneil/gsoa_data:/data
