@@ -20,6 +20,7 @@ RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('GSEABase')"
 RUN wget https://bitbucket.org/srp33/gsoa/downloads/GSOA_0.99.9.tar.gz \
    && R CMD INSTALL GSOA_0.99.9.tar.gz
 
+EXPOSE 5000
 COPY run_flask.sh /scripts/run_flask.sh
 CMD ["/scripts/run_flash.sh"]
     
