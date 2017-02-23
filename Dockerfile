@@ -21,6 +21,8 @@ RUN wget https://bitbucket.org/srp33/gsoa/downloads/GSOA_0.99.9.tar.gz \
    && R CMD INSTALL GSOA_0.99.9.tar.gz
 
 EXPOSE 5000
+RUN apt-get install -y python python-pip
+RUN pip install rpy2 flask Flask-API markdown
 COPY run_flask.sh /scripts/run_flask.sh
 RUN chmod +x /scripts/run_flask.sh
 CMD ["/scripts/run_flask.sh"]
