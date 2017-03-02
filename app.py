@@ -36,7 +36,7 @@ def gsoa_process():
         
         result =  gsoa.GSOA_ProcessFiles(request.data.get('dataFilePath', ''),
                                          request.data.get('classFilePath', ''),
-                                         request.data.get('gmtFilePath', ''), **args)
+                                         request.data.get('gmtFilePath', ''), outFilePath='/data/finished', **args)
         return 'Job sucessfully started: {}'.format(result)
         
     return 'test'
