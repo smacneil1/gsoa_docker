@@ -36,7 +36,8 @@ def gsoa_process():
         
         result =  gsoa.GSOA_ProcessFiles(request.data.get('dataFilePath', ''),
                                          request.data.get('classFilePath', ''),
-                                         request.data.get('gmtFilePath', ''), outFilePath='/data/finished', **args)
+                                         request.data.get('gmtFilePath', ''),
+                                         outFilePath=request.data.get('email', 'results_txt').replace('@', '_').replace('.','_'), **args)
         return 'Job sucessfully started: {}'.format(result)
         
     return 'test'
