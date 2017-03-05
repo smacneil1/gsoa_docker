@@ -1,13 +1,14 @@
 
 from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
-from rpy2.robjects.packages import importr
-import rpy2.robjects as ro
+import tasktiger
+from redis import Redis 
+from gsoa_task import call_gsoa
+# imports GSOA from R
 
-
-gsoa = importr('GSOA')
 app = FlaskAPI(__name__)
-
+conn = Redis(host="redis")
+tiger = tasktiger.TaskTiger(connection=conn)
 NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath', 'outFilePath']
 ACCEPTED_FIELDS = ['classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
                    'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
@@ -27,18 +28,9 @@ def gsoa_process():
         if not request.data:
             return "no data"
         validate_input(request.data)
-        args = request.data.copy()
-        for field in NECESSARY_FIELDS:
-            args.pop(field)
-        if len(str(request.data.get('dataFilePath'))) < 2:
-            return "no data"
-        app.logger.info("result: {}".format(request.data))
-        app.logger.info("email: {}".format(request.data.get('email', 'results_txt')))       
-        result =  gsoa.GSOA_ProcessFiles(request.data.get('dataFilePath', ''),
-                                         request.data.get('classFilePath', ''),
-                                         request.data.get('gmtFilePath', ''),
-                                         "/data/{}".format(request.data.get('email', 'results_txt')), **args)
-        return 'Job sucessfully started: {}'.format(result)
+        #call_gsoa(request.data)
+        tiger.delay(call_gsoa, kwargs={"request": request.data})
+        return 'Job sucessfully started'
         
     return 'test'
 

@@ -19,7 +19,7 @@ services:
       - /home/shelleymacneil/gsoa_docker:/app
       -  /home/shelleymacneil/gsoa_data:/data
     links:
-      redis
+      - redis
 
   redis:
     image: redis
