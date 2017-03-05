@@ -17,4 +17,11 @@ services:
       - "5000:5000"
     volumes:
       - /home/shelleymacneil/gsoa_docker:/app
-      - /home/shelleymacneil/gsoa_data:/data
+      -  /home/shelleymacneil/gsoa_data:/data
+    links:
+      redis
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
