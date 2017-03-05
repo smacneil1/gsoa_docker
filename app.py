@@ -8,8 +8,8 @@ import rpy2.robjects as ro
 gsoa = importr('GSOA')
 app = FlaskAPI(__name__)
 
-NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath']
-ACCEPTED_FIELDS = ['outFilePath', 'classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
+NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath', 'outFilePath']
+ACCEPTED_FIELDS = ['classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
                    'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
 
 def validate_input(request_data):
@@ -32,12 +32,12 @@ def gsoa_process():
             args.pop(field)
         if len(str(request.data.get('dataFilePath'))) < 2:
             return "no data"
-        print("result: {}".format(request.data))
-        
+        app.logger.info("result: {}".format(request.data))
+        app.logger.info("email: {}".format(request.data.get('email', 'results_txt')))       
         result =  gsoa.GSOA_ProcessFiles(request.data.get('dataFilePath', ''),
                                          request.data.get('classFilePath', ''),
                                          request.data.get('gmtFilePath', ''),
-                                         request.data.get('email', 'results_txt').replace('@', '_').replace('.','_'), **args)
+                                         "/data/{}".format(request.data.get('email', 'results_txt')), **args)
         return 'Job sucessfully started: {}'.format(result)
         
     return 'test'

@@ -25,7 +25,14 @@ RUN pip install rpy2 flask Flask-API markdown
 COPY run_flask.sh /scripts/run_flask.sh
 RUN chmod +x /scripts/run_flask.sh
 RUN R -e "install.packages(c('e1071', 'ROCR'), repos='https://cran.rstudio.com/')"
+
+# installing the queue and the queue database
+RUN pip install tasktiger redis
+
+# opens the port
 EXPOSE 5000
+
+# main docker script 
 CMD ["/scripts/run_flask.sh"]
     
 
