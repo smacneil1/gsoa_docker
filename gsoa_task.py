@@ -28,7 +28,7 @@ def call_gsoa(request):
         args.pop(field)
     if len(str(request.get('dataFilePath'))) < 2:
         return "no data"
-    outFilePath = "/data/{}".format(request.get('email', 'results_txt'))
+    outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', ''))
     print("email: {}".format(request.get('email', 'results_txt')))       
     result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
                                      classFilePath=request.get('classFilePath', ''),
