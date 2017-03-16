@@ -27,8 +27,9 @@ RUN chmod +x /scripts/run_flask.sh
 RUN R -e "install.packages(c('e1071', 'ROCR'), repos='https://cran.rstudio.com/')"
 
 # installing the queue and the queue database
-RUN pip install tasktiger redis
-
+RUN pip install tasktiger redis supervisor
+COPY supervisord.comf /etc/supervisord.conf
+RUN mkdir -p /var/log/supervisord
 # opens the port
 EXPOSE 5000
 
