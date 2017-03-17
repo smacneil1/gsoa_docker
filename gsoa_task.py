@@ -6,6 +6,7 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 import smtplib
+from rpy2.robjects import ListVector
 
 gsoa = importr('GSOA')
 rmarkdown = importr('rmarkdown')
@@ -37,7 +38,9 @@ def call_gsoa(request):
                                          gmtFilePath=request.get('gmtFilePath', ''),
                                          outFilePath=outFilePath,
                                          numRandomIterations=10)
-        rmarkdown.render('GSOA_Report.Rmd', output_file = outFilePath.replace('txt', 'html'), params = {'dataFile': outFilePath})
+        print("Writing RMarkdown")
+        rmarkdown.render('/app/GSOA_Report.Rmd', output_file = outFilePath.replace('txt', 'html'),
+            params=ListVector({'data1': outFilePath}))
         email_report(request.get('email'), outFilePath)
     except Exception as e:
         email_error(request.get('email'), e)
@@ -75,7 +78,7 @@ def email_report(email_address, file_path):
 def email_error(email_address, exception):
     from_ = 'smacneil88@gmail.com'
     msgRoot = MIMEMultipart('related')
-    msgRoot['Subject'] = 'GSOA Results'
+    msgRoot['Subject'] = 'GSOA Error'
     msgRoot['From'] = from_
     msgRoot['To'] = email_address
     msg = MIMEMultipart('alternative')
