@@ -77,18 +77,17 @@ def email_report(email_address, file_path):
 
 def email_error(email_address, exception):
     from_ = 'smacneil88@gmail.com'
-    msgRoot = MIMEMultipart('related')
-    msgRoot['Subject'] = 'GSOA Error'
-    msgRoot['From'] = from_
-    msgRoot['To'] = email_address
-    msg = MIMEMultipart('alternative')
-    text = MIMEText('There was an error running GSOA. {}'.format(exception), 'plain')
-    msgRoot.attach(msg)
-
+    msg = MIMEMultipart()
+    msg['From'] = from_
+    msg['To'] = email_address
+    msg['Subject'] = "GSOA ERROR"
+ 
+    body = "Error message: {}".format(exception)
+    msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
     mailer.starttls()
     mailer.login('smacneil88', 'Berkeley13')
-    mailer.sendmail(from_, email_address, msgRoot.as_string())
+    mailer.sendmail(from_, email_address, msg.as_string())
     mailer.close()
 
