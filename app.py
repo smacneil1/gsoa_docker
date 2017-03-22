@@ -4,6 +4,7 @@ from flask_api import FlaskAPI, status, exceptions
 import tasktiger
 from redis import Redis 
 from gsoa_task import call_gsoa
+
 # imports GSOA from R
 
 app = FlaskAPI(__name__)
@@ -12,6 +13,7 @@ tiger = tasktiger.TaskTiger(connection=conn)
 NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath', 'outFilePath']
 ACCEPTED_FIELDS = ['classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
                    'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
+
 
 def validate_input(request_data):
     if set(NECESSARY_FIELDS) - set(request_data.keys()):
