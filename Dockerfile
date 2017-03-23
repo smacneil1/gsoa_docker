@@ -28,6 +28,7 @@ RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown', 'googleVis'), repos='
 
 # installing the queue and the queue database
 RUN pip install tasktiger redis supervisor
+RUN R -e "install.packages(c('shiny', 'rmarkdown'), repos='https://cran.rstudio.com/')"
 COPY supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /var/log/supervisord
 # opens the port
