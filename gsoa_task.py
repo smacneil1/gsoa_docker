@@ -35,7 +35,8 @@ def call_gsoa(request):
             return "no data"
         outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', ''))
         print("email: {}".format(request.get('email', 'results_txt')))
-        rinterface.set_writeconsole(lambda line: local_buffer.append(line))
+        rinterface.set_writeconsole_warnerror(lambda line: local_buffer.append(line))
+        rinterface.set_writeconsole_regular(lambda line: local_buffer.append(line))
         result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
                                          classFilePath=request.get('classFilePath', ''),
                                          gmtFilePath=request.get('gmtFilePath', ''),
@@ -53,7 +54,9 @@ def call_gsoa(request):
     except Exception as e:
         email_error(request.get('email'), e, local_buffer)
     finally:
-        rinterface.set_writeconsole(rinterface.consolePrint)
+        rinterface.set_writeconsole_warnerror(rinterface.consolePrint)
+        rinterface.set_writeconsole_regular(rinterface.consolePrint)
+
 
 #@tiger.task()
 #def call_gsoa_hallmarks(request):
