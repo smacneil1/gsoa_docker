@@ -32,6 +32,8 @@ def gsoa_process():
         validate_input(request.data)
         #call_gsoa(request.data)
         tiger.delay(call_gsoa, kwargs={"request": request.data})
+        if request.data.get("checkbox", "") == "checked":
+             tiger.delay(call_gsoa_hallmarks, kwargs={"request": request.data})
         return 'Job sucessfully started'
         
     return 'test'

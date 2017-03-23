@@ -24,7 +24,7 @@ RUN apt-get install -y python python-pip
 RUN pip install rpy2 flask Flask-API markdown
 COPY run_flask.sh /scripts/run_flask.sh
 RUN chmod +x /scripts/run_flask.sh
-RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown', 'googleVis'), repos='https://cran.rstudio.com/')"
+RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown','googleVis'), repos='https://cran.rstudio.com/')"
 
 # installing the queue and the queue database
 RUN pip install tasktiger redis supervisor
