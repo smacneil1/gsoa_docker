@@ -1,6 +1,7 @@
 import tasktiger
 from redis import Redis 
 from rpy2.robjects.packages import importr
+from rpy2 import rinterface
 import rpy2.robjects as ro
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
@@ -24,17 +25,17 @@ ACCEPTED_FIELDS = ['outFilePath', 'classificationAlgorithm', 'numCrossValidation
 def call_gsoa(request):
     print("request: {}".format(request))
     print(NECESSARY_FIELDS)
+    local_buffer = []
     try:
         gsoa = importr('GSOA')
-        conn = Redis(host="redis")
-        tiger = tasktiger.TaskTiger(connection=conn)
         args = request.copy()
         for field in NECESSARY_FIELDS:
             args.pop(field)
         if len(str(request.get('dataFilePath'))) < 2:
             return "no data"
         outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', ''))
-        print("email: {}".format(request.get('email', 'results_txt')))       
+        print("email: {}".format(request.get('email', 'results_txt')))
+        rinterface.set_writeconsole(lambda line: local_buffer.append(line))
         result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
                                          classFilePath=request.get('classFilePath', ''),
                                          gmtFilePath=request.get('gmtFilePath', ''),
@@ -50,7 +51,9 @@ def call_gsoa(request):
             params=ListVector({'data1': outFilePath}))
         email_report(request.get('email'), outFilePath)
     except Exception as e:
-        email_error(request.get('email'), e)
+        email_error(request.get('email'), e, local_buffer)
+    finally:
+        rinterface.set_writeconsole(rinterface.consolePrint)
 
 #@tiger.task()
 #def call_gsoa_hallmarks(request):
@@ -116,14 +119,14 @@ def email_report(email_address, file_path):
     mailer.close()
 
 
-def email_error(email_address, exception):
+def email_error(email_address, exception, local_buffer):
     from_ = 'smacneil88@gmail.com'
     msg = MIMEMultipart()
     msg['From'] = from_
     msg['To'] = email_address
     msg['Subject'] = "GSOA ERROR"
     msg.preamble = 'GSOA Returned the Following Error'
-    body = "Error message: {}".format(exception)
+    body = "Error message: {}: \n {}".format(exception, local_buffer)
     msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
