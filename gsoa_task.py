@@ -200,8 +200,12 @@ def email_error(email_address, exception, local_buffer):
 #    body = BODY.format(str(trace))
 #=======
     msg.preamble = 'GSOA Returned the Following Error'
+<<<<<<< HEAD
     body = "Error message: {}: \n {}".format(exception, local_buffer)
 #>>>>>>> 2d036429e0df21578c4a38625837abd466e44324
+=======
+    body = "Error message: {}: \n {}".format(exception, '\n'.join(local_buffer))
+>>>>>>> f2683822730e609e04d6f0a3bed5456e9cb4a4f3
     msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
