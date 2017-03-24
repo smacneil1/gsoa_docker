@@ -129,7 +129,7 @@ def email_error(email_address, exception, local_buffer):
     msg['To'] = email_address
     msg['Subject'] = "GSOA ERROR"
     msg.preamble = 'GSOA Returned the Following Error'
-    body = "Error message: {}: \n {}".format(exception, local_buffer)
+    body = "Error message: {}: \n {}".format(exception, '\n'.join(local_buffer))
     msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
