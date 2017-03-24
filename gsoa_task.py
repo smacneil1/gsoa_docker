@@ -1,4 +1,3 @@
-
 import tasktiger
 from redis import Redis 
 from rpy2.robjects.packages import importr
@@ -65,9 +64,11 @@ def email_report(email_address, file_path):
     msgRoot['Subject'] = 'GSOA Results'
     msgRoot['From'] = from_
     msgRoot['To'] = email_address
-    msg = MIMEMultipart('alternative')
+    body = "GSOA ran ruccessfully! \n Your raw results are in the '.txt' file. \n The GSOA report is in the 'HTML' file (please downloand HTML file before viewing in web browser) \n Thanks for using GSOA!" 
+    msgRoot.attach(MIMEText(body, 'plain'))
+    #msg = MIMEMultipart('alternative')
     text = MIMEText('Results File', 'plain')
-    msgRoot.attach(msg)
+    #msgRoot.attach(msg)
     with open(file_path) as fp:
         attachment = MIMEBase('text', None)
         attachment.set_payload(fp.read())
@@ -93,8 +94,8 @@ def email_error(email_address, exception, local_buffer):
     msg['From'] = from_
     msg['To'] = email_address
     msg['Subject'] = "GSOA ERROR"
-    msg.preamble = 'GSOA Returned the Following Error'
-    body = "Error message: {}: \n {}".format(exception, '\n'.join(local_buffer))
+    #msg.preamble = 'GSOA Returned the Following Error:'
+    body = "GSOA Returned the Following Error: \n 'Error message: {}: \n {} \n Please email gsoa.app@gmail.com with further questions".format(exception, '\n'.join(local_buffer))
     msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
@@ -102,11 +103,3 @@ def email_error(email_address, exception, local_buffer):
     mailer.login('gsoa.app', 'p@thway@nalysi$')
     mailer.sendmail(from_, email_address, msg.as_string())
     mailer.close()
-
-
-
-
-
-
-
-
