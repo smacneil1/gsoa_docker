@@ -39,7 +39,7 @@ Row {data-width=300}
 your_GSOA_results= read.table("/app/GSOA_P53_C2.txt",header=T,sep='\t', quote="", row.names = 1)
 
 total = nrow(your_GSOA_results)
-gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
+#gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
 
 ```
     
@@ -48,8 +48,8 @@ gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
 ```{r}
 sig_pval = nrow(your_GSOA_results[ which(your_GSOA_results$p.value <= 0.05),])
 
-gauge(18, min = 0, max = nrow(your_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
-  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
+#gauge(18, min = 0, max = nrow(your_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
+#  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 
 ```
 
@@ -57,8 +57,8 @@ gauge(18, min = 0, max = nrow(your_GSOA_results) , label = "P-value < 0.05", gau
 
 ```{r}
 sig_fdr = nrow(your_GSOA_results[ which(your_GSOA_results$FDR <= 0.05),])
-gauge(sig_fdr, min = 0, max = 100 , label = "FDR < 0.05", gaugeSectors(
-  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
+#gauge(sig_fdr, min = 0, max = 100 , label = "FDR < 0.05", gaugeSectors(
+#  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 ```
 
 Row {data-height=575}
@@ -135,7 +135,7 @@ hallmark_GSOA_results= read.table("/app/GSOA_P53_Hallmarks_1000.txt",header=T,se
 
 total = nrow(hallmark_GSOA_results)
 
-gauge(total, min = 0, max = nrow(hallmark_GSOA_results) , label = "Gene Sets" )
+#gauge(total, min = 0, max = nrow(hallmark_GSOA_results) , label = "Gene Sets" )
 
 ```
     
@@ -144,8 +144,8 @@ gauge(total, min = 0, max = nrow(hallmark_GSOA_results) , label = "Gene Sets" )
 ```{r}
 sig_pval = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$p.value <= 0.05),])
 
-gauge(sig_pval, min = 0, max = nrow(hallmark_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
-  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
+#gauge(sig_pval, min = 0, max = nrow(hallmark_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
+#  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 
 ```
 
@@ -153,8 +153,8 @@ gauge(sig_pval, min = 0, max = nrow(hallmark_GSOA_results) , label = "P-value < 
 
 ```{r}
 sig_fdr = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$FDR <= 0.05),])
-gauge(sig_fdr, min = 0, max = 100 , label = "FDR < 0.05", gaugeSectors(
-  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
+#gauge(sig_fdr, min = 0, max = 100 , label = "FDR < 0.05", gaugeSectors(
+#  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 ```
 
 
