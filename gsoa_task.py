@@ -28,31 +28,31 @@ ACCEPTED_FIELDS = ['outFilePath', 'classificationAlgorithm', 'numCrossValidation
 def call_gsoa(request):
     print("request: {}".format(request))
     print(NECESSARY_FIELDS)
-<<<<<<< HEAD
-   # result=''
-  #  try:
-    stdout_file = open('stdout.txt', 'w')
-    sys.stdout = stdout_file
-    gsoa = importr('GSOA')
-    conn = Redis(host="redis")
-    tiger = tasktiger.TaskTiger(connection=conn)
-    args = request.copy()
-    for field in NECESSARY_FIELDS:
-        args.pop(field)
-    if len(str(request.get('dataFilePath'))) < 2:
-        return "no data"
-    outFilePath = "/data/{}-{}.txt".format(os.urandom(10).encode("hex"), request.get('email', 'results_txt').replace('.com', ''))
-    print("email: {}".format(request.get('email', 'results_txt')))
-    result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
-                                     classFilePath=request.get('classFilePath', ''),
-                                     gmtFilePath=request.get('gmtFilePath', ''),
-                                     outFilePath=outFilePath,
-                                     numRandomIterations=request.get('numRandomIterations', ''),
-                                     classificationAlgorithm=request.get('classificationAlgorithm', ''), 
-                                     numCrossValidationFolds=request.get('numCrossValidationFolds', ''), 
-                                     removePercentLowestExpr=request.get('removePercentLowestExpr', ''), 
-                                     removePercentLowestVar=request.get('removePercentLowestVar', ''))
-=======
+# <<<<<<< HEAD
+#    # result=''
+#   #  try:
+#     stdout_file = open('stdout.txt', 'w')
+#     sys.stdout = stdout_file
+#     gsoa = importr('GSOA')
+#     conn = Redis(host="redis")
+#     tiger = tasktiger.TaskTiger(connection=conn)
+#     args = request.copy()
+#     for field in NECESSARY_FIELDS:
+#         args.pop(field)
+#     if len(str(request.get('dataFilePath'))) < 2:
+#         return "no data"
+#     outFilePath = "/data/{}-{}.txt".format(os.urandom(10).encode("hex"), request.get('email', 'results_txt').replace('.com', ''))
+#     print("email: {}".format(request.get('email', 'results_txt')))
+#     result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
+#                                      classFilePath=request.get('classFilePath', ''),
+#                                      gmtFilePath=request.get('gmtFilePath', ''),
+#                                      outFilePath=outFilePath,
+#                                      numRandomIterations=request.get('numRandomIterations', ''),
+#                                      classificationAlgorithm=request.get('classificationAlgorithm', ''), 
+#                                      numCrossValidationFolds=request.get('numCrossValidationFolds', ''), 
+#                                      removePercentLowestExpr=request.get('removePercentLowestExpr', ''), 
+#                                      removePercentLowestVar=request.get('removePercentLowestVar', ''))
+# =======
     local_buffer = []
     try:
         gsoa = importr('GSOA')
@@ -85,7 +85,6 @@ def call_gsoa(request):
         rinterface.set_writeconsole_warnerror(rinterface.consolePrint)
         rinterface.set_writeconsole_regular(rinterface.consolePrint)
 
->>>>>>> 2d036429e0df21578c4a38625837abd466e44324
 
     #print(result)
     
@@ -186,24 +185,23 @@ BODY = """GSOA returned the following error:
 If you have further questions, please email gsoa.app@gmail.com
 """
 
-<<<<<<< HEAD
-def email_error(email_address, exception,trace):
-    from_ = 'gsoa.app@gmail.com'
-=======
+#<<<<<<< HEAD
+#def email_error(email_address, exception,trace):
+#    from_ = 'gsoa.app@gmail.com'
+#=======
 def email_error(email_address, exception, local_buffer):
     from_ = 'smacneil88@gmail.com'
->>>>>>> 2d036429e0df21578c4a38625837abd466e44324
     msg = MIMEMultipart()
     msg['From'] = from_
     msg['To'] = email_address
     msg['Subject'] = "GSOA ERROR"
-<<<<<<< HEAD
+#<<<<<<< HEAD
     #body = BODY.format(str(exception).strip())
-    body = BODY.format(str(trace))
-=======
+#    body = BODY.format(str(trace))
+#=======
     msg.preamble = 'GSOA Returned the Following Error'
     body = "Error message: {}: \n {}".format(exception, local_buffer)
->>>>>>> 2d036429e0df21578c4a38625837abd466e44324
+#>>>>>>> 2d036429e0df21578c4a38625837abd466e44324
     msg.attach(MIMEText(body, 'plain'))
     #msg.attach(text)
     mailer = smtplib.SMTP('smtp.gmail.com:587')
