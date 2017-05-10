@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y -t unstable \
     r-cran-xml \
     libxml2-dev
 
-RUN    R -e "install.packages(c('mlr', 'doParallel', 'foreach', 'annotate', 'XML'), repos='https://cran.rstudio.com/')"
+RUN    R -e "install.packages(c('mlr', , 'DT', 'doParallel', 'foreach', 'annotate', 'XML'), repos='https://cran.rstudio.com/')"
 RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('limma'); biocLite('GSEABase'); biocLite('edgeR')"
 
 RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('GSEABase')"
