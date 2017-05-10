@@ -6,8 +6,8 @@ from redis import Redis
 from gsoa_task import call_gsoa
 
 # imports GSOA from R
-
 app = FlaskAPI(__name__)
+# redis stores all the quque information
 conn = Redis(host="redis")
 tiger = tasktiger.TaskTiger(connection=conn)
 NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath', 'outFilePath']
@@ -15,12 +15,15 @@ ACCEPTED_FIELDS = ['classificationAlgorithm', 'numCrossValidationFolds', 'numRan
                    'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
 
 
+# makes sure the feilds are present 
 def validate_input(request_data):
     if set(NECESSARY_FIELDS) - set(request_data.keys()):
         print("necessary fields not added")
     if set(ACCEPTED_FIELDS) - set(request_data.keys()) - set(ACCEPTED_FIELDS):
         print("invalid fields passed : {}".format(set(ACCEPTED_FIELDS) - set(request_data.keys()) - set(ACCEPTED_FIELDS)))
-    
+ 
+   
+# puts gsoa jobs into the task tiger queque 
 @app.route("/", methods=['GET', 'POST'])
 def gsoa_process():
     """
@@ -39,26 +42,6 @@ def gsoa_process():
     return 'test'
 
 
-
-@app.route("/<int:key>/", methods=['GET', 'PUT', 'DELETE'])
-def notes_detail(key):
-    """
-    Retrieve, update or delete note instances.
-    """
-    if request.method == 'PUT':
-        note = str(request.data.get('text', ''))
-        notes[key] = note
-        return note_repr(key)
-
-    elif request.method == 'DELETE':
-        notes.pop(key, None)
-        return '', status.HTTP_204_NO_CONTENT
-
-    # request.method == 'GET'
-    if key not in notes:
-        raise exceptions.NotFound()
-    return note_repr(key)
-
-
+# startup your flask app
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
