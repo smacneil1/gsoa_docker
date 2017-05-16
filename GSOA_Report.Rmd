@@ -7,16 +7,16 @@ params:
     data2: NA
     data3: NA
     data4: NA
-    class: 
+    class: NA
     hallmarks: 
     results_hallmark: NA
-    alg: SVM
-    var: 10
-    lowexpress: 10
-    crossval: 5
-    iterations: 1000
+    alg: NA
+    var: NA
+    lowexpress: NA
+    crossval: NA
+    iterations: NA
     GSOA: NA
-    genesets: C2_Genesets.txt
+    genesets: NA
 
 ---
 
@@ -36,7 +36,7 @@ Row {data-width=300}
 ```{r}
 
 #read in GSOA results
-your_GSOA_results= read.table("/app/GSOA_P53_C2.txt",header=T,sep='\t', quote="", row.names = 1)
+your_GSOA_results= read.table(data1,header=T,sep='\t', quote="", row.names = 1)
 
 total = nrow(your_GSOA_results)
 #gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )

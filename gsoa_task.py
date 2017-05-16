@@ -20,11 +20,11 @@ tiger = tasktiger.TaskTiger(connection=conn)
 NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath']
 ACCEPTED_FIELDS = ['outFilePath', 'classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
                    'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
-
+# takes the stuff from the queque
 @tiger.task()
 def call_gsoa(request):
+    # data from task tiger
     print("request: {}".format(request))
-    print(NECESSARY_FIELDS)
     local_buffer = []
     try:
         gsoa = importr('GSOA')
@@ -33,8 +33,9 @@ def call_gsoa(request):
             args.pop(field)
         if len(str(request.get('dataFilePath'))) < 2:
             return "no data"
-        outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', ''))
+        outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', '').strip())
         print("email: {}".format(request.get('email', 'results_txt')))
+        #redirect everything from R into the python console (local buffer)
         rinterface.set_writeconsole_warnerror(lambda line: local_buffer.append(line))
         rinterface.set_writeconsole_regular(lambda line: local_buffer.append(line))
         result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
