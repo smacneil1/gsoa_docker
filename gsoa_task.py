@@ -50,7 +50,16 @@ def call_gsoa(request):
         print("Writing RMarkdown")
         outFilePath_html=outFilePath.replace('txt', 'html')
         rmarkdown.render('/app/GSOA_Report.Rmd', output_file = outFilePath.replace('txt', 'html'),
-            params=ListVector({'data1': outFilePath}))
+            params=ListVector({'data1': outFilePath,  'alg': request.get('classificationAlgorithm', 'svm') ,
+            'class': request.get('classFilePath', ''), 
+            'crossval': request.get('numCrossValidationFolds', ''),
+            'data_files' : request.get('dataFilePath', ''),
+            'genesets': request.get('gmtFilePath', ''),
+            #'hallmarks': 
+            'iterations': request.get('numRandomIterations', ''),
+            'lowexpress' : request.get('removePercentLowestExpr', ''),
+            #'results_hallmark' : 
+            'var': request.get('removePercentLowestVar', '')}))  
         email_report(request.get('email'), outFilePath)
     except Exception as e:
         email_error(request.get('email'), e, local_buffer)

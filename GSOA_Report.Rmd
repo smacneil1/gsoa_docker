@@ -3,21 +3,17 @@ title: "GSOA Report"
 output: 
   html_document
 params: 
-    data1: NA 
-    data2: NA
-    data3: NA
-    data4: NA
+    data1: dsfsdf 
+    data_files: NA
     class: NA
-    hallmarks: 
-    results_hallmark: NA
+    #results_hallmark: NA
     alg: NA
     var: NA
     lowexpress: NA
     crossval: NA
     iterations: NA
-    GSOA: NA
     genesets: NA
-
+    #hallmarks: NA 
 ---
 
 ```{r include = FALSE}
@@ -36,7 +32,7 @@ Row {data-width=300}
 ```{r}
 
 #read in GSOA results
-your_GSOA_results= read.table(data1,header=T,sep='\t', quote="", row.names = 1)
+your_GSOA_results= read.table(data1 ,header=T,sep='\t', quote="", row.names = 1)
 
 total = nrow(your_GSOA_results)
 #gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
