@@ -38,9 +38,9 @@ def call_gsoa(request):
         #redirect everything from R into the python console (local buffer)
         rinterface.set_writeconsole_warnerror(lambda line: local_buffer.append(line))
         rinterface.set_writeconsole_regular(lambda line: local_buffer.append(line))
-        result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
-                                         classFilePath=request.get('classFilePath', ''),
-                                         gmtFilePath=request.get('gmtFilePath', ''),
+        result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', '/data/P53_RNA.txt'),
+                                         classFilePath=request.get('classFilePath', '/data/P53_classFile.txt'),
+                                         gmtFilePath=request.get('gmtFilePath', '/data/h.all.v5.2.symbols.gmt'),
                                          outFilePath=outFilePath,
                                          numRandomIterations=request.get('numRandomIterations', ''),
                                          classificationAlgorithm=request.get('classificationAlgorithm', ''), 

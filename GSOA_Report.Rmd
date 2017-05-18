@@ -3,7 +3,9 @@ title: "GSOA Report"
 output: 
   html_document
 params: 
-    data1: dsfsdf 
+    data_xyz: NA
+    data1: NA
+    data2: GSOA_P53_C2.txt 
     data_files: NA
     class: NA
     #results_hallmark: NA
@@ -32,7 +34,9 @@ Row {data-width=300}
 ```{r}
 
 #read in GSOA results
-your_GSOA_results= read.table(data1 ,header=T,sep='\t', quote="", row.names = 1)
+
+#your_GSOA_results= read.table("GSOA_P53_C2.txt" ,header=T,sep='\t', quote="", row.names = 1)
+your_GSOA_results= read.table(params$data1 ,header=T,sep='\t', quote="", row.names = 1)
 
 total = nrow(your_GSOA_results)
 #gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
@@ -122,14 +126,14 @@ Row {data-width=300}
 ### Total Number of Gene Sets GSOA Ran
 ```{r}
 
-hallmark_GSOA_results= read.table("/app/GSOA_P53_Hallmarks_1000.txt",header=T,sep='\t', quote="", row.names = 1)
+#hallmark_GSOA_results= read.table("/app/GSOA_P53_Hallmarks_1000.txt",header=T,sep='\t', quote="", row.names = 1)
 
 
 #hallmark_GSOA_results= read.table(GSOA,header=T,sep='\t', quote="", row.names = 1)
 
 #hallmark_GSOA_results=GSOA
 
-total = nrow(hallmark_GSOA_results)
+#total = nrow(hallmark_GSOA_results)
 
 #gauge(total, min = 0, max = nrow(hallmark_GSOA_results) , label = "Gene Sets" )
 
@@ -138,7 +142,7 @@ total = nrow(hallmark_GSOA_results)
 ### Number of Significant Gene Sets (P-Value)
     
 ```{r}
-sig_pval = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$p.value <= 0.05),])
+#sig_pval = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$p.value <= 0.05),])
 
 #gauge(sig_pval, min = 0, max = nrow(hallmark_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
 #  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
@@ -148,7 +152,7 @@ sig_pval = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$p.value <= 0.
 ### Number of Significant Gene Sets (FDR)
 
 ```{r}
-sig_fdr = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$FDR <= 0.05),])
+#sig_fdr = nrow(hallmark_GSOA_results[ which(hallmark_GSOA_results$FDR <= 0.05),])
 #gauge(sig_fdr, min = 0, max = 100 , label = "FDR < 0.05", gaugeSectors(
 #  success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 ```
@@ -163,19 +167,19 @@ Row {data-height=575}
 
 # remove the hallmark from the gene sets so its shorter
 
-hallmark_GSOA_results_bar= hallmark_GSOA_results
-newrownames= gsub("HALLMARK_", "", row.names(hallmark_GSOA_results))
+#hallmark_GSOA_results_bar= hallmark_GSOA_results
+#newrownames= gsub("HALLMARK_", "", row.names(hallmark_GSOA_results))
 # hack
-hallmark_GSOA_results_bar[,1]=newrownames
+#hallmark_GSOA_results_bar[,1]=newrownames
 
 # plot the bar plot
 #Bar1 <- gvisBarChart(hallmark_GSOA_results_bar[1:20,], xvar="AUC", yvar=c("Rank", "p.value"), options= list(fontSize=10.5, width = 650, height = 550, title= "Top 20 Gene Sets", legend="right",hAxes="[{title:'Rank', titleTextStyle: {color: 'black', fontSize:14}}]", titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}",isStacked =  FALSE, chartArea= "{ width: '40%', height: '75%'}" ))
 #plot(Bar1)
 
 
-Bar <- gvisBarChart(hallmark_GSOA_results_bar[1:20,], "AUC", c("Rank", "p.value"),options=list(title= "Top 20 Gene Sets", legend="bottom",series="[{targetAxisIndex: 1},{targetAxisIndex:0}]",hAxis="{title:'P-value',   titleTextStyle:{color:'blue', fontSize:14}}" , titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}", chartArea= "{ width: '40%', height: '75%'}" ,
-                        width = 650, height = 550))
-plot(Bar)
+#Bar <- gvisBarChart(hallmark_GSOA_results_bar[1:20,], "AUC", c("Rank", "p.value"),options=list(title= "Top 20 Gene Sets", legend="bottom",series="[{targetAxisIndex: 1},{targetAxisIndex:0}]",hAxis="{title:'P-value',   titleTextStyle:{color:'blue', fontSize:14}}" , titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}", chartArea= "{ width: '40%', height: '75%'}" ,
+#                        width = 650, height = 550))
+#plot(Bar)
 
 ```
 
@@ -184,24 +188,24 @@ plot(Bar)
 
 ```{r echo = FALSE, results = 'asis'}
 # this file contains the "processes" for the hallmarks 
-hallmarks_processes=read.table("/app/Hallmarks_Geneset_Processes.txt", header=F,sep='\t', quote="", row.names = 1)
+#hallmarks_processes=read.table("/app/Hallmarks_Geneset_Processes.txt", header=F,sep='\t', quote="", row.names = 1)
 
 #Merge results with proccesses
-merged = merge(hallmarks_processes, hallmark_GSOA_results, by = "row.names")
-row.names(merged)=merged[,1]
-merged=merged[,-1]
+#merged = merge(hallmarks_processes, hallmark_GSOA_results, by = "row.names")
+#row.names(merged)=merged[,1]
+#merged=merged[,-1]
 
-significant_results= merged[which(merged$p.value <= 0.05),]
+#significant_results= merged[which(merged$p.value <= 0.05),]
 
 # Find the freq of each process
-freq = as.data.frame(table(significant_results$V2))
+#freq = as.data.frame(table(significant_results$V2))
 
 # #remove the processes with a zero
-freq.no0 <- subset(freq, Freq > 0) 
+#freq.no0 <- subset(freq, Freq > 0) 
 
 # Plot Pie Chart with Google Viz
-Pie <- gvisPieChart(freq.no0,options= list(title="Hallmark Ontologies", is3D= F, width=500, height=600, fontSize=15, legend ='left', chartArea= "{left: 10, top: 75, width: '100%', height: '100%'}", titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}"))
-plot(Pie)
+#Pie <- gvisPieChart(freq.no0,options= list(title="Hallmark Ontologies", is3D= F, width=500, height=600, fontSize=15, legend ='left', chartArea= "{left: 10, top: 75, width: '100%', height: '100%'}", titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}"))
+#plot(Pie)
 
 ```
 
@@ -212,7 +216,7 @@ Row {data-width=300}
 ```{r echo = FALSE, results = 'asis'}
 
 # plot results using the datatalbe package
-DT::datatable(hallmark_GSOA_results, options = list(bPaginate = F, rownames= T, bFilter= T, bInfo =T, bLengthChange =T))
+#DT::datatable(hallmark_GSOA_results, options = list(bPaginate = F, rownames= T, bFilter= T, bInfo =T, bLengthChange =T))
 ```
 
 
