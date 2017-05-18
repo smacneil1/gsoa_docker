@@ -1,8 +1,13 @@
 ---
 title: "GSOA Report"
-output: 
-  html_document
-params: 
+output:
+    flexdashboard::flex_dashboard
+    theme: cerulean
+    vertical_layout: scroll
+    orientation: rows
+    social: menu
+    source_code: embed
+params:
     data_xyz: NA
     data1: NA
     data2: GSOA_P53_C2.txt 
@@ -20,8 +25,11 @@ params:
 
 ```{r include = FALSE}
 suppressMessages(library(googleVis))
-#library(flexdashboard)
+library(flexdashboard)
 op <- options(gvis.plot.tag="chart")
+#output: 
+#  html_document
+
 ```
 
 

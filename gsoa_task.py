@@ -28,6 +28,7 @@ def call_gsoa(request):
     local_buffer = []
     try:
         gsoa = importr('GSOA')
+        #flex_dashboard =  importr('')
         args = request.copy()
         for field in NECESSARY_FIELDS:
             args.pop(field)
@@ -49,7 +50,7 @@ def call_gsoa(request):
                                          removePercentLowestVar=request.get('removePercentLowestVar', ''))
         print("Writing RMarkdown")
         outFilePath_html=outFilePath.replace('txt', 'html')
-        rmarkdown.render('/app/GSOA_Report.Rmd', output_file = outFilePath.replace('txt', 'html'),
+        rmarkdown.render('/app/GSOA_Report.Rmd', "flex_dashboard", output_file = outFilePath.replace('txt', 'html'),
             params=ListVector({'data1': outFilePath,  'alg': request.get('classificationAlgorithm', 'svm') ,
             'class': request.get('classFilePath', ''), 
             'crossval': request.get('numCrossValidationFolds', ''),

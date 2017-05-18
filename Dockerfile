@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y -t unstable \
     r-cran-xml \
     libxml2-dev
 
-RUN    R -e "install.packages(c('mlr', , 'DT', 'doParallel', 'foreach', 'annotate', 'XML'), repos='https://cran.rstudio.com/')"
+RUN    R -e "install.packages(c('mlr', 'DT', 'doParallel', 'foreach', 'annotate', 'XML'), repos='https://cran.rstudio.com/')"
 RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('limma'); biocLite('GSEABase'); biocLite('edgeR')"
 
 RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('GSEABase')"
@@ -28,11 +28,12 @@ RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown','googleVis'), repos='h
 
 # installing the queue and the queue database
 RUN pip install tasktiger redis supervisor
-RUN R -e "install.packages(c('shiny', 'rmarkdown'), repos='https://cran.rstudio.com/')"
+RUN R -e "install.packages(c('shiny', 'rmarkdown', 'flexdashboard'), repos='https://cran.rstudio.com/')"
 COPY supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /var/log/supervisord
 # opens the port
 EXPOSE 5000
+RUN pip install tasktiger
 
 # main docker script 
 CMD ["/scripts/run_flask.sh"]
