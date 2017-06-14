@@ -111,8 +111,8 @@ Row {data-width=300}
  **Variance Filtered : **  `r params$var`  
  **Low Gene Expression Filtered : **   `r params$lowexpress`  
  **Number of Cross Validations : **  `r params$crossval`  
- **Number of Iterations : ** `r params$iterations` 
- ** GSOA Version : ** 1.0 
+ **Number of Iterations : ** `r params$iterations`   
+ **GSOA Version : ** 1.0 
 
 <br>
 <i class="fa fa-calendar"></i>
