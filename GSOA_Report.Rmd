@@ -55,7 +55,7 @@ gauge(total, min = 0, max = nrow(your_GSOA_results) , label = "Gene Sets" )
 ```{r}
 sig_pval = nrow(your_GSOA_results[ which(your_GSOA_results$p.value <= 0.05),])
 
-gauge(18, min = 0, max = nrow(your_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
+gauge(sig_pval, min = 0, max = nrow(your_GSOA_results) , label = "P-value < 0.05", gaugeSectors(
   success = c(0, total/3), warning = c(total/3+1, total/2), danger = c(total/2+1, sig_pval)))
 
 ```

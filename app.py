@@ -12,7 +12,7 @@ conn = Redis(host="redis")
 tiger = tasktiger.TaskTiger(connection=conn)
 NECESSARY_FIELDS = ['dataFilePath', 'classFilePath', 'gmtFilePath', 'outFilePath']
 ACCEPTED_FIELDS = ['classificationAlgorithm', 'numCrossValidationFolds', 'numRandomIterations',
-                   'numCores', 'removePercentLowestExpr', 'removePercentLowestVar'] + NECESSARY_FIELDS
+                   'numCores', 'removePercentLowestExpr', 'removePercentLowestVar', 'checkbox'] + NECESSARY_FIELDS
 
 
 # makes sure the feilds are present 
@@ -33,12 +33,15 @@ def gsoa_process():
         if not request.data:
             return "no data"
         validate_input(request.data)
+        if request.data.get('gmtFilePath') and len(request.data.get('gmtFilePath')) > 6 :
+             tiger.delay(call_gsoa, kwargs={"request": request.data})
         #call_gsoa(request.data)
-        tiger.delay(call_gsoa, kwargs={"request": request.data})
-        if request.data.get("checkbox", "") == "checked":
-             tiger.delay(call_gsoa_hallmarks, kwargs={"request": request.data})
+        if request.data.get("checkbox", False) :
+ 	     data=request.data
+	     data['gmtFilePath'] = '/data/GeneSets_BildLab.txt'           
+             tiger.delay(call_gsoa, kwargs={"request": data})
+             print('Started with  bild lab signatures')
         return 'Job sucessfully started'
-        
     return 'test'
 
 

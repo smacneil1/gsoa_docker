@@ -1,23 +1,14 @@
 version: "2.0"
 
 services:
-  ui:
-    image: shelleymac/shiny
-    ports:
-      - "80:3838"
-    volumes:
-      - /home/shelleymacneil/shiny_ui:/srv/shiny-server/gsoa
-      - /home/shelleymacneil/gsoa_data:/data
-    links:
-      - gsoa
 
   gsoa:
     image: shelleymac/gsoa_docker
     ports:
       - "5000:5000"
     volumes:
-      - /home/shelleymacneil/gsoa_docker:/app
-      -  /home/shelleymacneil/gsoa_data:/data
+      - /home/smacneil/gsoa_docker:/app
+      - /home/smacneil/gsoa_data:/data
     links:
       - redis
 
