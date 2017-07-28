@@ -9,6 +9,9 @@ from email.MIMEBase import MIMEBase
 import smtplib
 from rpy2.robjects import ListVector
 import sys # DELETE
+import multiprocessing
+
+
 
 gsoa = importr('GSOA')
 rmarkdown = importr('rmarkdown')
@@ -34,15 +37,16 @@ def call_gsoa(request):
             args.pop(field)
         if len(str(request.get('dataFilePath'))) < 2:
             return "no data"
-        outFilePath = "/data/{}.txt".format(request.get('email', 'results_txt').replace('.com', '').strip())
+        outFilePath = "/data/{}_{}.txt".format(request.get('email', 'results_txt').replace('.com', '').strip(),request.get('dataFilePath').split(".")[0])
         print("email: {}".format(request.get('email', 'results_txt')))
         #redirect everything from R into the python console (local buffer)
         rinterface.set_writeconsole_warnerror(lambda line: local_buffer.append(line))
         rinterface.set_writeconsole_regular(lambda line: local_buffer.append(line))
-        result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', '/data/P53_RNA.txt'),
-                                         classFilePath=request.get('classFilePath', '/data/P53_classFile.txt'),
-                                         gmtFilePath=request.get('gmtFilePath', '/data/h.all.v5.2.symbols.gmt'),
+        result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
+                                         classFilePath=request.get('classFilePath', ''),
+                                         gmtFilePath=request.get('gmtFilePath', ''),
                                          outFilePath=outFilePath,
+                                         numCores=multiprocessing.cpu_count(),
                                          numRandomIterations=request.get('numRandomIterations', ''),
                                          classificationAlgorithm=request.get('classificationAlgorithm', ''), 
                                          numCrossValidationFolds=request.get('numCrossValidationFolds', ''), 
@@ -75,7 +79,7 @@ def email_report(email_address, file_path):
     msgRoot['Subject'] = 'GSOA Results'
     msgRoot['From'] = from_
     msgRoot['To'] = email_address
-    body = "GSOA ran ruccessfully! \n Your raw results are in the '.txt' file. \n The GSOA report is in the 'HTML' file (please downloand HTML file before viewing in web browser) \n Thanks for using GSOA!" 
+    body = "GSOA ran ruccessfully! \n Your raw results are in the '.txt' file. \n The GSOA report is in the 'HTML' file (please downloand HTML file before viewing in web browser) \n Thank you for using GSOA!" 
     msgRoot.attach(MIMEText(body, 'plain'))
     #msg = MIMEMultipart('alternative')
     text = MIMEText('Results File', 'plain')

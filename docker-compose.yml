@@ -1,6 +1,16 @@
 version: "2.0"
 
 services:
+  ui:
+    image: shelleymac/shiny
+    ports:
+      - "80:3838"
+    volumes:
+      - /home/smacneil/shiny_ui:/srv/shiny-server/gsoa
+      - /home/smacneil/gsoa_data:/data:rw
+      - /etc/localtime:/etc/localtime:ro
+    links:
+      - gsoa
 
   gsoa:
     image: shelleymac/gsoa_docker
@@ -8,7 +18,8 @@ services:
       - "5000:5000"
     volumes:
       - /home/smacneil/gsoa_docker:/app
-      - /home/smacneil/gsoa_data:/data
+      - /home/smacneil/gsoa_data:/data:rw
+      - /etc/localtime:/etc/localtime:ro
     links:
       - redis
 
@@ -16,3 +27,8 @@ services:
     image: redis
     ports:
       - "6379:6379"
+
+
+
+
+
