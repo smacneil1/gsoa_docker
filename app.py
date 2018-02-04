@@ -33,12 +33,16 @@ def gsoa_process():
         if not request.data:
             return "no data"
         validate_input(request.data)
-        if request.data.get('gmtFilePath') and len(request.data.get('gmtFilePath')) > 6 :
-             tiger.delay(call_gsoa, kwargs={"request": request.data})
+        print("testing: {}".format(request.data))
+        data=request.data
+        if not isinstance(data['dataFilePath'], basestring): 
+             data['dataFilePath'] = ','.join(data['dataFilePath'])          
+        if data.get('gmtFilePath') and len(data.get('gmtFilePath')) > 6 :
+             print("gmtFilePath")
+	     tiger.delay(call_gsoa, kwargs={"request": data})
         #call_gsoa(request.data)
-        if request.data.get("checkbox", False) :
- 	     data=request.data
-	     data['gmtFilePath'] = '/data/GeneSets_BildLab.txt'           
+        if data.get("checkbox", False) :
+	     data['gmtFilePath'] = '/data/BildLab_genesets.gmt.txt' 
              tiger.delay(call_gsoa, kwargs={"request": data})
              print('Started with  bild lab signatures')
         return 'Job sucessfully started'
