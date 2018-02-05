@@ -10,9 +10,10 @@ import smtplib
 from rpy2.robjects import ListVector
 import sys # DELETE
 import multiprocessing
-import rpy2.robjects as robjects
 
-#soa = importr('GSOA')
+
+
+gsoa = importr('GSOA')
 rmarkdown = importr('rmarkdown')
 
 conn = Redis(host="redis")
@@ -25,18 +26,11 @@ ACCEPTED_FIELDS = ['outFilePath', 'classificationAlgorithm', 'numCrossValidation
 # takes the stuff from the queque
 @tiger.task()
 def call_gsoa(request):
-    local_buffer = []
-    def append_output(line):
-        print(line)
-        local_buffer.append(line)
     # data from task tiger
     print("request: {}".format(request))
+    local_buffer = []
     try:
-        r_source = robjects.r['source']
-        r_source("/app/GSOA.R")
-        gsoa= robjects.r['GSOA_ProcessFiles']
-        rmarkdown = importr('rmarkdown')
-        #gsoa = importr('GSOA')
+        gsoa = importr('GSOA')
         #flex_dashboard =  importr('')
         args = request.copy()
         for field in NECESSARY_FIELDS:
@@ -46,10 +40,9 @@ def call_gsoa(request):
         outFilePath = "/data/{}_{}.txt".format(request.get('email', 'results_txt').replace('.com', '').strip(),request.get('dataFilePath').split(".")[0])
         print("email: {}".format(request.get('email', 'results_txt')))
         #redirect everything from R into the python console (local buffer)
-        rinterface.set_writeconsole_warnerror(lambda line: append_output(line))
-        rinterface.set_writeconsole_regular(lambda line: append_output(line))
-        
-        result =  gsoa(dataFilePath=request.get('dataFilePath', ''),
+        rinterface.set_writeconsole_warnerror(lambda line: local_buffer.append(line))
+        rinterface.set_writeconsole_regular(lambda line: local_buffer.append(line))
+        result =  gsoa.GSOA_ProcessFiles(dataFilePath=request.get('dataFilePath', ''),
                                          classFilePath=request.get('classFilePath', ''),
                                          gmtFilePath=request.get('gmtFilePath', ''),
                                          outFilePath=outFilePath,
