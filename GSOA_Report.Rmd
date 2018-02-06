@@ -83,9 +83,9 @@ your_GSOA_results_bar[,1]=rownames(your_GSOA_results)
 #Bar1 <- gvisBarChart(your_GSOA_results_bar[1:20,], xvar= "AUC", yvar=c("Rank", "p.value"), options= list(fontSize=10.5, width = 1400, height = 550, title= "Top 20 Gene Sets", legend="right",hAxes="[{title:'Rank', titleTextStyle: {color: 'black', fontSize:14}}]", titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}",isStacked =  FALSE, chartArea= "{ width: '35%', height: '75%'}" ) )
 #plot(Bar1)
 
-Bar1 <- gvisBarChart(your_GSOA_results_bar[1:20,], "AUC", c("Rank", "p.value"),options=list(title= "Top 20 Gene Sets",
+Bar1 <- gvisBarChart(your_GSOA_results_bar[1:20,], "AUC", c("p.value"),options=list(title= "Top 20 Gene Sets",
                          series="[{targetAxisIndex: 1},{targetAxisIndex:0}]",hAxis="{title:'P-value',   titleTextStyle:{color:'blue', fontSize:14}}" , titleTextStyle="{color:'Black',fontName:'Arial',fontSize:18}", chartArea= "{ width: '45%', height: '75%'}",
-                         width = 1100, height = 550))
+                         width = 1100, height = 500))
 plot(Bar1)
 
 ```
