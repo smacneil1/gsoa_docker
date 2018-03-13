@@ -26,14 +26,15 @@ RUN pip install rpy2 flask Flask-API markdown
 RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown','googleVis'), repos='https://cran.rstudio.com/')"
 
 # installing the queue and the queue database
-RUN pip install tasktiger redis supervisor
+RUN apt-get install python-psutil parallel
+RUN pip install tasktiger redis supervisor numpy scipy sklearn psutil 
 RUN R -e "install.packages(c('shiny', 'rmarkdown', 'flexdashboard'), repos='https://cran.rstudio.com/')"
 RUN wget https://github.com/closeio/tasktiger/archive/master.zip && \
     unzip master.zip && \
     cd tasktiger-master && \
     python setup.py install && \
     cp -r tasktiger/lua /usr/local/lib/python2.7/dist-packages/tasktiger/
-
+RUN git clone https://srp33@bitbucket.org/srp33/gsoa.git
 COPY run_flask.sh /scripts/run_flask.sh
 RUN chmod +x /scripts/run_flask.sh
 COPY supervisord.conf /etc/supervisord.conf

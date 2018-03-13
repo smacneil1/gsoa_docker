@@ -41,10 +41,10 @@ def gsoa_process():
              print("gmtFilePath")
 	     tiger.delay(call_gsoa, kwargs={"request": data})
         #call_gsoa(request.data)
-        if data.get("checkbox", False) :
-	     data['gmtFilePath'] = '/data/BildLab_genesets.gmt.txt' 
-             tiger.delay(call_gsoa, kwargs={"request": data})
-             print('Started with  bild lab signatures')
+        #if data.get("checkbox", False) :
+	#     data['gmtFilePath'] = '/data/BildLab_genesets.gmt.txt' 
+        #     tiger.delay(call_gsoa, kwargs={"request": data})
+        #     print('Started with  bild lab signatures')
         return 'Job sucessfully started'
     return 'test'
 
