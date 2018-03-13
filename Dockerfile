@@ -21,7 +21,7 @@ RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite('GSEABase')"
 RUN wget https://bitbucket.org/srp33/gsoa/downloads/GSOA_0.99.9.tar.gz \
    && R CMD INSTALL GSOA_0.99.9.tar.gz
 
-RUN pip install rpy2 flask Flask-API markdown
+RUN pip install rpy2==2.4.2 flask Flask-API markdown
 
 RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown','googleVis'), repos='https://cran.rstudio.com/')"
 
