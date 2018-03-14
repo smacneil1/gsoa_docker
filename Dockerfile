@@ -26,7 +26,7 @@ RUN pip install rpy2==2.4.2 flask Flask-API markdown
 RUN R -e "install.packages(c('e1071', 'ROCR', 'rmarkdown','googleVis'), repos='https://cran.rstudio.com/')"
 
 # installing the queue and the queue database
-RUN apt-get install -y python-psutil parallel
+RUN apt-get install -y python-psutil parallel git
 RUN pip install tasktiger redis supervisor numpy scipy sklearn psutil 
 RUN R -e "install.packages(c('shiny', 'rmarkdown', 'flexdashboard'), repos='https://cran.rstudio.com/')"
 RUN wget https://github.com/closeio/tasktiger/archive/master.zip && \
