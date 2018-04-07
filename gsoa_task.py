@@ -13,7 +13,6 @@ import multiprocessing
 import rpy2.robjects as robjects
 import subprocess
 
-#soa = importr('GSOA')
 rmarkdown = importr('rmarkdown')
 
 conn = Redis(host="redis")
@@ -52,18 +51,9 @@ def call_gsoa(request):
         # wait for the process to terminate
         out, err = process.communicate()
         errcode = process.returncode
+        if errcode > 0 : 
+           email_error(request.get('email'), "", out+err)
 
-        
-        result =  gsoa(dataFilePath=request.get('dataFilePath', ''),
-                                         classFilePath=request.get('classFilePath', ''),
-                                         gmtFilePath=request.get('gmtFilePath', ''),
-                                         outFilePath=outFilePath,
-                                         numCores=multiprocessing.cpu_count(),
-                                         numRandomIterations=request.get('numRandomIterations', ''),
-                                         classificationAlgorithm=request.get('classificationAlgorithm', ''), 
-                                         numCrossValidationFolds=request.get('numCrossValidationFolds', ''), 
-                                         removePercentLowestExpr=request.get('removePercentLowestExpr', ''), 
-                                         removePercentLowestVar=request.get('removePercentLowestVar', ''))
         print("Writing RMarkdown")
         outFilePath_html=outFilePath.replace('txt', 'html')
         rmarkdown.render('/app/GSOA_Report.Rmd', output_file = outFilePath.replace('txt', 'html'),
@@ -79,10 +69,7 @@ def call_gsoa(request):
             'var': request.get('removePercentLowestVar', '')}))  
         email_report(request.get('email'), outFilePath)
     except Exception as e:
-        email_error(request.get('email'), e, local_buffer)
-    finally:
-        rinterface.set_writeconsole_warnerror(rinterface.consolePrint)
-        rinterface.set_writeconsole_regular(rinterface.consolePrint)
+        email_error(request.get('email'), e, "")
 
 
 def email_report(email_address, file_path):
@@ -91,7 +78,7 @@ def email_report(email_address, file_path):
     msgRoot['Subject'] = 'GSOA Results'
     msgRoot['From'] = from_
     msgRoot['To'] = email_address
-    body = "GSOA ran ruccessfully! \n Your raw results are in the '.txt' file. \n The GSOA report is in the 'HTML' file (please downloand HTML file before viewing in web browser) \n Thank you for using GSOA!" 
+    body = "GSOA ran successfully! \n Your raw results are in the '.txt' file. \n The GSOA report is in the 'HTML' file (please downloand HTML file before viewing in web browser) \n Thank you for using GSOA!" 
     msgRoot.attach(MIMEText(body, 'plain'))
     #msg = MIMEMultipart('alternative')
     text = MIMEText('Results File', 'plain')
